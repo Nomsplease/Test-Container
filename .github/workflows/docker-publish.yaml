@@ -48,13 +48,12 @@ jobs:
 
       - name: Build Image
         id: build_image
-        uses: ./buildah-build/
+        uses: ./src/
         with:
           image: ${{ env.IMAGE_NAME }}
           layers: true
           oci: true
           tags: 'latest ${{ github.sha }}'
-          context: ./src/
           containerfiles: |
             ./Dockerfile
           extra-args: |
