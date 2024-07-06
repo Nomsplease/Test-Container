@@ -32,7 +32,9 @@ jobs:
       - name: Downcase Environment
         run: |
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY@L}" >> "${GITHUB_ENV}"
-          echo "IMAGE_REGISTRY=${IMAGE_NAME@L}" >> "${GITHUB_ENV}"
+          echo ${{ env.IMAGE_REGISTRY }}
+          echo "IMAGE_NAME=${IMAGE_NAME@L}" >> "${GITHUB_ENV}"
+          echo ${{ env.IMAGE_NAME }}
 
       - name: Checkout repository
         uses: actions/checkout@v4
