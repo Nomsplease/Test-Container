@@ -53,7 +53,7 @@ jobs:
           tags: 'latest ${{ github.sha }}'
           context: ./src/
           containerfiles: |
-            ./Dockerfile
+            Dockerfile
 
       - name: Echo Outputs
         run: |
