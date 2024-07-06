@@ -51,8 +51,9 @@ jobs:
           layers: true
           oci: true
           tags: 'latest ${{ github.sha }}'
+          context: ./src/
           containerfiles: |
-            ./src/Dockerfile
+            ./Dockerfile
 
       - name: Echo Outputs
         run: |
