@@ -1,30 +1,15 @@
-FROM debian:bookworm-slim
-
-ENV DEBIAN_FRONTEND=noninteractive \
-    DISPLAY=:0.0 \
-    DISPLAY_WIDTH=1024 \
-    DISPLAY_HEIGHT=768 \
-    RUN_FLUXBOX=yes
-
-#Install Layer - Common
-RUN dpkg --add-architecture i386 &&\
-    apt update &&\
-    apt install -y software-properties-common supervisor tzdata unzip curl wget net-tools lib32gcc-s1 procps crudini &&\
-    apt clean &&\
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-#Install Layer - X11 and VNC
-RUN apt update &&\
-    apt install -y xvfb x11vnc xterm fluxbox novnc &&\
-    apt clean &&\
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-#Copy local files
-COPY root/ /
-
-#Exposed Ports
-## VNC
-EXPOSE 8080
-
-#Entrypoint to Setup services
-ENTRYPOINT ["/entrypoint.sh"]
+FROM registry.access.redhat.com/ubi8/ubi
+# Make a directory for our code and copy it over.
+RUN mkdir /opt/hello
+COPY hello/* /opt/hello
+# Install pip and Python requirements (and clean up).
+RUN dnf -y install python3-pip && \
+      dnf clean all
+RUN pip3 install -r /opt/hello/requirements.txt && \
+      rm -rf /root/.cache
+# Set the working directory to where we copied the code.
+WORKDIR /opt/hello
+# Expose port 8000.
+EXPOSE 8000
+# Run the Flask application via gunicorn.
+CMD ["gunicorn", "-b", "0.0.0.0:8000", "hello:app"]
