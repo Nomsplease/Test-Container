@@ -29,9 +29,10 @@ jobs:
       id-token: write
 
     steps:
-      - name: downcase IMAGE_REGISTRY
+      - name: Downcase Environment
         run: |
           echo "IMAGE_REGISTRY=${IMAGE_REGISTRY@L}" >> "${GITHUB_ENV}"
+          echo "IMAGE_REGISTRY=${IMAGE_NAME@L}" >> "${GITHUB_ENV}"
 
       - name: Checkout repository
         uses: actions/checkout@v4
